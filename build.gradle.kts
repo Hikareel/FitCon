@@ -28,10 +28,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("com.h2database:h2")
     runtimeOnly("com.microsoft.sqlserver:mssql-jdbc")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+    implementation("mysql:mysql-connector-java:8.0.28")
 }
 
 tasks.withType<KotlinCompile> {
