@@ -4,6 +4,8 @@ import fitcon.dto.UserDto
 import fitcon.service.UserService
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -48,10 +50,10 @@ class AuthController(
         return "redirect:/register?success"
     }
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/users")
-    fun users(model: Model): String{
-        val users = userService.findAllUsers()
-        model.addAttribute("users", users)
-        return "users"
+    @GetMapping("/user")
+    fun users(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
+        val user = userService.findUserByEmail(userDetails.username)
+        model.addAttribute("user", user)
+        return "user"
     }
 }

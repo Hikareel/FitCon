@@ -40,6 +40,10 @@ class UserServiceImpl(
                 .map { user -> mapToUserDto(user!!) }
                 .collect(Collectors.toList())
     }
+
+    override fun findUserByName(name: String): User? {
+        return userRepository.findByName(name)
+    }
     fun mapToUserDto(user: User): UserDto{
         val userDto = UserDto()
         val str = user.name!!.split(" ")
