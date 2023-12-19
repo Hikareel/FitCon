@@ -11,12 +11,6 @@
                         <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/register}" sec:authorize="isAnonymous()">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/login}" sec:authorize="isAnonymous()">Login</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/about}">About</a>
                     </li>
                     <li class="nav-item">
@@ -47,6 +41,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/register}" sec:authorize="isAnonymous()">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/login}" sec:authorize="isAnonymous()">Login</a>
                     </li>
                 </ul>
             </div>
