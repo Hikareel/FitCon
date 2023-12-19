@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 class AuthController(
@@ -71,6 +72,33 @@ class AuthController(
         val user = userService.findUserByEmail(userDetails.username)
         model.addAttribute("user", user)
         return "userProfile/user"
+    }
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TREINER')")
+    @GetMapping("/user/change-password")
+    fun passwordChangeForm(): String{
+        return "userProfile/passChange"
+    }
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TREINER')")
+    @PostMapping("/user/change-password")
+    fun passwordChange(
+        @RequestParam oldPassword: String,
+        @RequestParam newPassword: String,
+        @RequestParam confirmPassword: String,
+        @AuthenticationPrincipal userDetails: UserDetails,
+        model: Model
+    ): String{
+        if(newPassword != confirmPassword){
+            model.addAttribute("error", "New and confirmation passwords must be the same!")
+            return "userProfile/passChange"
+        }
+        val userEmail = userDetails.username
+        val passwordChange = userService.changePassword(userEmail, oldPassword, newPassword)
+        return if(passwordChange){
+            "redirect:/user"
+        } else {
+            model.addAttribute("error", "Old password incorrect")
+            "userProfile/passChange"
+        }
     }
     @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
     @GetMapping("/user/pass")

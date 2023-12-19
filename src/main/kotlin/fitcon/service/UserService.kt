@@ -9,4 +9,5 @@ interface UserService {
     fun findUserByEmail(email: String): User?
     fun findAllUsers(): List<UserDto>
     fun findUserByName(name: String): User?
+    fun changePassword(email: String, oldPassword: String, newPassword: String): Boolean
 }

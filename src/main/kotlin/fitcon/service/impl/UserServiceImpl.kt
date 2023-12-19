@@ -40,9 +40,21 @@ class UserServiceImpl(
                 .map { user -> mapToUserDto(user!!) }
                 .collect(Collectors.toList())
     }
-
     override fun findUserByName(name: String): User? {
         return userRepository.findByName(name)
+    }
+
+    override fun changePassword(email: String, oldPassword: String, newPassword: String): Boolean {
+        val user = userRepository.findByEmail(email)
+        if (user != null) {
+            if(!passwordEncoder.matches(oldPassword, user.password)){
+                return false
+            }
+            user.password = passwordEncoder.encode(newPassword)
+            userRepository.save(user)
+            return true
+        }
+        return false
     }
     fun mapToUserDto(user: User): UserDto{
         val userDto = UserDto()
