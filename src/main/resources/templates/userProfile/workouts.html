@@ -8,12 +8,20 @@
 <div class="container">
     <div class="my-workouts">
         <h2>My workouts</h2>
-        <div class="listWorkouts" th:each="workout: ${userWorkouts}">
-            <b th:text="${workout.name}"></b>
-            <p th:text="${workout.description}"></p>
+        <a class="btn" th:href="@{/user/add-workout}">Add new workout</a>
+        <div class="col-xl-5" id="workouts" th:each="workout, iterStat: ${userWorkouts}">
+            <div class="card">
+                <div class="card-header" id="'heading'+ ${iterStat.index}">
+                    <h5 class="mb-0">
+                        <button class="btn" data-toggle="collapse" th:data-target="'#collapse' + ${iterStat.index}" aria-expanded="true" th:aria-controls="'collapse' + ${iterStat.index}" th:text="${workout.name}"></button>
+                    </h5>
+                </div>
+                <div th:id="'collapse' + ${iterStat.index}" class="collapse" th:aria-labelledby="'heading' + ${iterStat.index}" data-parent="#workouts">
+                    <div class="card-body" th:text="${workout.description}"></div>
+                </div>
+            </div>
         </div>
     </div>
-    <a class="btn" th:href="@{/user/add-workout}">Add your workout</a>
 </div>
 <div th:replace="fragments/footer.html::footer"></div>
 </body>
