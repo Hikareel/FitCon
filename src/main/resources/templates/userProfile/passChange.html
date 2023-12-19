@@ -2,26 +2,26 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
 >
-<head th:replace="fragments/header.html::header"></head>
+<head th:replace="(~{fragments/header.html::header})"></head>
 <body>
-<div th:replace="fragments/navbar.html::navbar"></div>
-<div class="container">
-    <div class="passChangeForm">
-        <p th:if="${error}" class="text-danger" th:text="${error}"></p>
-        <form th:action="@{/user/change-password}" method="post">
-            <label for="oldPassword">Old Password:</label>
-            <input type="password" id="oldPassword" name="oldPassword" required>
+    <div th:replace="(~{fragments/navbar.html::navbar})"></div>
+    <div class="container">
+        <div class="passChangeForm">
+            <p th:if="${error}" class="text-danger" th:text="${error}"></p>
+            <form th:action="@{/user/change-password}" method="post">
+                <label for="oldPassword">Old Password:</label>
+                <input type="password" id="oldPassword" name="oldPassword" required>
 
-            <label for="newPassword">New Password:</label>
-            <input type="password" id="newPassword" name="newPassword" required>
+                <label for="newPassword">New Password:</label>
+                <input type="password" id="newPassword" name="newPassword" required>
 
-            <label for="confirmPassword">Confirm New Password:</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <label for="confirmPassword">Confirm New Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
 
-            <button type="submit">Change Password</button>
-        </form>
+                <button type="submit">Change Password</button>
+            </form>
+        </div>
     </div>
-</div>
-<div th:replace="fragments/footer.html::footer"></div>
+    <div th:replace="(~{fragments/footer.html::footer})"></div>
 </body>
 </html>
