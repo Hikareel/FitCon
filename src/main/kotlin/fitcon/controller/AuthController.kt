@@ -17,9 +17,25 @@ import org.springframework.web.bind.annotation.PostMapping
 class AuthController(
     private val userService: UserService,
 ){
-    @GetMapping("/index")
+    @GetMapping("/home")
     fun home(): String{
-        return "index"
+        return "home"
+    }
+    @GetMapping("/about")
+    fun about(): String{
+        return "about"
+    }
+    @GetMapping("/schedule")
+    fun schedule(): String{
+        return "schedule"
+    }
+    @GetMapping("/faq")
+    fun faq(): String{
+        return "faq"
+    }
+    @GetMapping("/contact")
+    fun contact(): String{
+        return "contact"
     }
     @GetMapping("/login")
     fun login(): String{
@@ -54,6 +70,16 @@ class AuthController(
     fun users(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
         val user = userService.findUserByEmail(userDetails.username)
         model.addAttribute("user", user)
-        return "user"
+        return "userProfile/user"
+    }
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
+    @GetMapping("/user/pass")
+    fun userPasses(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
+        return "userProfile/passes"
+    }
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
+    @GetMapping("/user/workouts")
+    fun userWorkouts(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
+        return "userProfile/workouts"
     }
 }

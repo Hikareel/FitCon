@@ -8,10 +8,42 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/register}" sec:authorize="isAnonymous()">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/login}" sec:authorize="isAnonymous()">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/about}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/schedule}">Schedule</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false">Trainings</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item">Group</a>
+                            <a class="dropdown-item">Personal</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/faq}">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/contact}">Contact</a>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                        <a class="nav-link active dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{/user}">Account</a>
+                            <a class="dropdown-item" th:href="@{/user/pass}">Pass</a>
+                            <a class="dropdown-item">Group trainings</a>
+                            <a class="dropdown-item">Personal trainings</a>
+                            <a class="dropdown-item" th:href="@{/user/workouts}">My workouts</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
