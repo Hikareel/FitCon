@@ -49,7 +49,7 @@ class AuthController(
         userService.saveUser(userDto)
         return "redirect:/register?success"
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TREINER')")
     @GetMapping("/user")
     fun users(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
         val user = userService.findUserByEmail(userDetails.username)

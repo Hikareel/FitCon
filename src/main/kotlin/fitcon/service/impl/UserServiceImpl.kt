@@ -22,7 +22,7 @@ class UserServiceImpl(
         user.email = userDto.email
         user.password = passwordEncoder.encode(userDto.password)
 
-        var role = roleRepository.findByName("ADMIN")
+        var role = roleRepository.findByName("CLIENT")
         if(role == null){
             role = checkRoleExist()
         }
@@ -54,7 +54,7 @@ class UserServiceImpl(
     }
     fun checkRoleExist(): Role{
         val role = Role()
-        role.name = "ADMIN"
+        role.name = "CLIENT"
         return roleRepository.save(role)
     }
 }
