@@ -6,8 +6,6 @@ import jakarta.persistence.*
 @Entity
 @Table(name="users")
 class User {
-    private val serialVersionUID = 1L
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
@@ -28,4 +26,8 @@ class User {
         inverseJoinColumns = [JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")]
     )
     var roles: List<Role> = ArrayList()
+
+    @OneToMany(mappedBy = "createdBy", cascade = [CascadeType.ALL])
+    val workouts: List<Workout>? = null
+
 }

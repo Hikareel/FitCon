@@ -1,7 +1,10 @@
 package fitcon.controller
 
+import com.fasterxml.jackson.databind.BeanDescription
 import fitcon.dto.UserDto
+import fitcon.dto.WorkoutDto
 import fitcon.service.UserService
+import fitcon.service.WorkoutService
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @Controller
 class AuthController(
     private val userService: UserService,
+    private val workoutService: WorkoutService
 ){
     @GetMapping("/home")
     fun home(): String{
@@ -106,8 +110,36 @@ class AuthController(
         return "userProfile/passes"
     }
     @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
+    @GetMapping("/user/add-workout")
+    fun addWorkoutForm(model: Model): String{
+        val workout = WorkoutDto()
+        model.addAttribute("workout", workout)
+        return "userProfile/addWorkout"
+    }
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
+    @PostMapping("/user/add-workout/save")
+    fun addWorkout(
+        @Valid @ModelAttribute("workout") workoutDto: WorkoutDto,
+        @AuthenticationPrincipal userDetails: UserDetails,
+        model: Model,
+        result: BindingResult
+    ): String{
+        val existingWorkout = workoutService.findWorkoutByName(workoutDto.name!!)
+        if (existingWorkout != null ){
+            result.rejectValue("name", "", "There is already workout with that name!")
+        }
+        if (result.hasErrors()){
+            model.addAttribute("workout", workoutDto)
+            return "userProfile/addWorkout"
+        }
+        workoutService.saveWorkout(workoutDto, userDetails.username)
+        return "redirect:/user/workouts"
+    }
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
     @GetMapping("/user/workouts")
     fun userWorkouts(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
+        val userWorkouts = workoutService.findWorkoutsByUserEmail(userDetails.username)
+        model.addAttribute("userWorkouts", userWorkouts)
         return "userProfile/workouts"
     }
 }
