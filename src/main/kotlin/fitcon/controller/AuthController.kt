@@ -55,6 +55,7 @@ class AuthController(
     @PostMapping("/register/save")
     fun registration(
         @Valid @ModelAttribute("user") userDto: UserDto,
+        @RequestParam role: Boolean,
         result: BindingResult,
         model: Model
     ):String{
@@ -67,22 +68,22 @@ class AuthController(
             model.addAttribute("user", userDto)
             return "/register"
         }
-        userService.saveUser(userDto)
+        userService.saveUser(userDto, role)
         return "redirect:/register?success"
     }
-    @PreAuthorize("hasRole('CLIENT') or hasRole('TREINER')")
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
     @GetMapping("/user")
     fun users(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
         val user = userService.findUserByEmail(userDetails.username)
         model.addAttribute("user", user)
         return "userProfile/user"
     }
-    @PreAuthorize("hasRole('CLIENT') or hasRole('TREINER')")
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
     @GetMapping("/user/change-password")
     fun passwordChangeForm(): String{
         return "userProfile/passChange"
     }
-    @PreAuthorize("hasRole('CLIENT') or hasRole('TREINER')")
+    @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
     @PostMapping("/user/change-password")
     fun passwordChange(
         @RequestParam oldPassword: String,

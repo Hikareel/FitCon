@@ -5,7 +5,7 @@ import fitcon.entity.User
 
 
 interface UserService {
-    fun saveUser(userDto: UserDto)
+    fun saveUser(userDto: UserDto, role: Boolean)
     fun findUserByEmail(email: String): User?
     fun findAllUsers(): List<UserDto>
     fun findUserByName(name: String): User?

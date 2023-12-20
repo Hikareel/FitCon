@@ -16,15 +16,16 @@ class UserServiceImpl(
     val roleRepository: RoleRepository,
     val passwordEncoder: PasswordEncoder
 ): UserService {
-    override fun saveUser(userDto: UserDto){
+    override fun saveUser(userDto: UserDto, role: Boolean){
         val user = User()
         user.name = userDto.firstName + " " + userDto.lastName
         user.email = userDto.email
         user.password = passwordEncoder.encode(userDto.password)
+        val roleName = if (role) "TRAINER" else "CLIENT"
 
-        var role = roleRepository.findByName("CLIENT")
+        var role = roleRepository.findByName(roleName)
         if(role == null){
-            role = checkRoleExist()
+            role = createNewRole(roleName)
         }
         user.roles = listOf(role)
         userRepository.save(user)
@@ -64,9 +65,9 @@ class UserServiceImpl(
         userDto.email = user.email!!
         return userDto
     }
-    fun checkRoleExist(): Role{
+    fun createNewRole(roleName: String): Role{
         val role = Role()
-        role.name = "CLIENT"
+        role.name = roleName
         return roleRepository.save(role)
     }
 }
