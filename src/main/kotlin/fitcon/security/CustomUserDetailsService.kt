@@ -22,13 +22,14 @@ class CustomUserDetailsService(
             org.springframework.security.core.userdetails.User(
                 user.email,
                 user.password,
-                mapRolesToAuthorities(user.roles)
+                mapRoleToAuthorities(user.role!!)
             )
         } else {
             throw UsernameNotFoundException("Invalid username or password.")
         }
     }
-    private fun mapRolesToAuthorities(roles: Collection<Role>): Collection<GrantedAuthority?> {
+    private fun mapRoleToAuthorities(role: Role): Collection<GrantedAuthority?> {
+        val roles = listOf(role)
         val mapRoles: Collection<GrantedAuthority?> = roles.stream()
             .map { role -> SimpleGrantedAuthority(role.name) }
             .collect(Collectors.toList())

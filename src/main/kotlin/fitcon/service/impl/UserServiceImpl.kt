@@ -27,7 +27,7 @@ class UserServiceImpl(
         if(role == null){
             role = createNewRole(roleName)
         }
-        user.roles = listOf(role)
+        user.role = role
         userRepository.save(user)
     }
     override fun findUserByEmail(email: String): User? {
@@ -57,6 +57,11 @@ class UserServiceImpl(
         }
         return false
     }
+
+    override fun findAllTrainers(): List<UserDto> {
+        TODO()
+    }
+
     fun mapToUserDto(user: User): UserDto{
         val userDto = UserDto()
         val str = user.name!!.split(" ")

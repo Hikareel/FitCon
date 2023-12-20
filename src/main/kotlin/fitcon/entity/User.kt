@@ -19,13 +19,9 @@ class User {
     @Column(nullable = false)
     var password: String? = null
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    @JoinTable(
-        name = "users_roles",
-        joinColumns = [JoinColumn(name = "USER_ID", referencedColumnName = "ID")],
-        inverseJoinColumns = [JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")]
-    )
-    var roles: List<Role> = ArrayList()
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "ROLE_ID", nullable = false)
+    var role: Role? = null
 
     @OneToMany(mappedBy = "createdBy", cascade = [CascadeType.ALL])
     val workouts: List<Workout>? = null

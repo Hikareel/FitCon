@@ -13,6 +13,6 @@ class Role {
     @Column(nullable = false, unique = true)
     var name: String? = null
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
     val users: List<User>? = null
 }

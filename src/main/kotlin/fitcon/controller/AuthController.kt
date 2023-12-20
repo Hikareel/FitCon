@@ -55,7 +55,7 @@ class AuthController(
     @PostMapping("/register/save")
     fun registration(
         @Valid @ModelAttribute("user") userDto: UserDto,
-        @RequestParam role: Boolean,
+        @RequestParam(required = false) role: Boolean,
         result: BindingResult,
         model: Model
     ):String{

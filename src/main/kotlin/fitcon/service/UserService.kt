@@ -10,4 +10,5 @@ interface UserService {
     fun findAllUsers(): List<UserDto>
     fun findUserByName(name: String): User?
     fun changePassword(email: String, oldPassword: String, newPassword: String): Boolean
+    fun findAllTrainers(): List<UserDto>
 }
