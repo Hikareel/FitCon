@@ -8,6 +8,7 @@ import fitcon.repository.UserRepository
 import fitcon.service.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.*
 import java.util.stream.Collectors
 
 @Service
@@ -59,12 +60,21 @@ class UserServiceImpl(
     }
 
     override fun findAllTrainers(): List<UserDto> {
-        TODO()
+        val role = roleRepository.findByName("TRAINER")
+        return userRepository.findAllByRole(role!!)
+                            .stream()
+                            .map { trainer -> mapToUserDto(trainer) }
+                            .collect(Collectors.toList())
+    }
+
+    override fun findUserById(id: Long): User? {
+        return userRepository.findById(id).get()
     }
 
     fun mapToUserDto(user: User): UserDto{
         val userDto = UserDto()
         val str = user.name!!.split(" ")
+        userDto.id = user.id
         userDto.firstName = str[0]
         userDto.lastName = str[1]
         userDto.email = user.email!!

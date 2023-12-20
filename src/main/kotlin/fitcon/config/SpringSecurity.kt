@@ -31,7 +31,7 @@ class SpringSecurity(
             }
             .authorizeHttpRequests { authorize ->
                 authorize.requestMatchers("/register/**").permitAll()
-                    .requestMatchers("/home", "/about", "/schedule", "/faq", "/contact").permitAll()
+                    .requestMatchers("/home", "/about", "/schedule", "/faq", "/contact", "/user/{id}").permitAll()
                     .anyRequest().authenticated()
             }.formLogin { form ->
                 form

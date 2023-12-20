@@ -12,10 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
 @Controller
 class AuthController(
@@ -27,7 +24,9 @@ class AuthController(
         return "home"
     }
     @GetMapping("/about")
-    fun about(): String{
+    fun about(model: Model): String{
+        val trainers = userService.findAllTrainers()
+        model.addAttribute("trainers", trainers)
         return "about"
     }
     @GetMapping("/schedule")
@@ -142,5 +141,14 @@ class AuthController(
         val userWorkouts = workoutService.findWorkoutsByUserEmail(userDetails.username)
         model.addAttribute("userWorkouts", userWorkouts)
         return "userProfile/workouts"
+    }
+    @GetMapping("/user/{id}")
+    fun showTrainerProfile(
+        @PathVariable id: Long,
+        model: Model
+    ): String{
+        val trainer = userService.findUserById(id)
+        model.addAttribute("trainer", trainer)
+        return "userProfile/trainerCard"
     }
 }

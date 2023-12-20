@@ -2,6 +2,7 @@ package fitcon.service
 
 import fitcon.dto.UserDto
 import fitcon.entity.User
+import java.util.Optional
 
 
 interface UserService {
@@ -11,4 +12,5 @@ interface UserService {
     fun findUserByName(name: String): User?
     fun changePassword(email: String, oldPassword: String, newPassword: String): Boolean
     fun findAllTrainers(): List<UserDto>
+    fun findUserById(id: Long): User?
 }

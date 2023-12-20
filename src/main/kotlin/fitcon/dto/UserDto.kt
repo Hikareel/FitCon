@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 
 class UserDto {
-    private val id: Long? = null
+    var id: Long? = null
 
     @NotEmpty(message = "Name cannot be empty")
     var firstName: String? = null
