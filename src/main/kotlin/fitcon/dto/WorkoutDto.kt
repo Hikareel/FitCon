@@ -1,5 +1,6 @@
 package fitcon.dto
 
+import fitcon.entity.Exercise
 import fitcon.entity.User
 import jakarta.validation.constraints.NotEmpty
 
@@ -11,4 +12,6 @@ class WorkoutDto {
 
     @NotEmpty(message = "Must have description!")
     var description: String? = null
+
+    var exercises: List<Exercise>? = null
 }

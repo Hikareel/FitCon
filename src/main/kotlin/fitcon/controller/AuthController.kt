@@ -1,8 +1,10 @@
 package fitcon.controller
 
 import com.fasterxml.jackson.databind.BeanDescription
+import fitcon.dto.ExerciseDto
 import fitcon.dto.UserDto
 import fitcon.dto.WorkoutDto
+import fitcon.service.ExerciseService
 import fitcon.service.UserService
 import fitcon.service.WorkoutService
 import jakarta.validation.Valid
@@ -17,7 +19,8 @@ import org.springframework.web.bind.annotation.*
 @Controller
 class AuthController(
     private val userService: UserService,
-    private val workoutService: WorkoutService
+    private val workoutService: WorkoutService,
+    private val exerciseService: ExerciseService
 ){
     @GetMapping("/home")
     fun home(): String{
@@ -113,13 +116,16 @@ class AuthController(
     @GetMapping("/user/add-workout")
     fun addWorkoutForm(model: Model): String{
         val workout = WorkoutDto()
+        val exercise = ExerciseDto()
         model.addAttribute("workout", workout)
+        model.addAttribute("exercise", exercise)
         return "userProfile/addWorkout"
     }
     @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
     @PostMapping("/user/add-workout/save")
     fun addWorkout(
         @Valid @ModelAttribute("workout") workoutDto: WorkoutDto,
+        @Valid @ModelAttribute("exercise") exerciseDto: ExerciseDto,
         @AuthenticationPrincipal userDetails: UserDetails,
         model: Model,
         result: BindingResult
@@ -133,12 +139,16 @@ class AuthController(
             return "userProfile/addWorkout"
         }
         workoutService.saveWorkout(workoutDto, userDetails.username)
+        exerciseService.saveExercise(exerciseDto, workoutDto.name!!)
         return "redirect:/user/workouts"
     }
     @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
     @GetMapping("/user/workouts")
     fun userWorkouts(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
         val userWorkouts = workoutService.findWorkoutsByUserEmail(userDetails.username)
+        val list = userWorkouts.stream().forEach {
+            workout -> workout.exercises = exerciseService.findAllExerciseByWorkout(workout)
+        }
         model.addAttribute("userWorkouts", userWorkouts)
         return "userProfile/workouts"
     }

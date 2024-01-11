@@ -18,6 +18,11 @@
                     </div>
                     <div th:id="'collapse' + ${iterStat.index}" class="collapse" th:aria-labelledby="'heading' + ${iterStat.index}" data-parent="#workouts">
                         <div class="card-body" th:text="${workout.description}"></div>
+                        <div class="card-body">
+                            <div th:each="exercise, iterStat: ${workout.exercises}">
+                                <p th:text="${exercise.exerciseName} + ' - ' + ${exercise.series} + ' series  / ' + ${exercise.reps} + ' reps' + (${exercise.info}!=''? ' - Addtional info: ' + ${exercise.info} : '.')"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
