@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="(~{fragments/header.html::header})"></head>
 <body>
-    <div th:replace="(~{fragments/navbar.html::navbar})"></div>
-    <br /><br />
-    <div class="container">
-        <div class="row">
-            <h1 class="text-center"> Take a look at our schedule! </h1>
-        </div>
+<div th:replace="(~{fragments/navbar.html::navbar})"></div>
+
+<div class="container trainings-container">
+    <div th:each=" model: ${trainingsCollection}">
+        <h2 th:text="${model.trainer.firstName} + ' ' + ${model.trainer.lastName}"/>
+
+        <ul class="trainings-ul">
+            <li class="trainings-li" th:each="training : ${model.trainings}">
+                <p th:text="'Start Date: ' + ${training.startDate}"></p>
+                <p th:text="'End Date: ' + ${training.endDate}"></p>
+                <p th:text="'Description: ' + ${training.description}"></p>
+                <p th:text="'Type: ' + ${training.type}"></p>
+            </li>
+        </ul>
     </div>
-    <div th:replace="(~{fragments/footer.html::footer})"></div>
+</div>
+
+<div th:replace="(~{fragments/footer.html::footer})"></div>
 </body>
 </html>

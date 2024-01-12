@@ -1,0 +1,32 @@
+.trainings-container {
+    margin-top: 20px;
+}
+
+.trainings-ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.trainings-li {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.trainings-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    border: transparent;
+    border-radius: 5px;
+}
+
+.trainings-btn:hover {
+    border: transparent;
+    background-color: #45a049;
+    color: white;
+}

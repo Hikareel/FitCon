@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="(~{fragments/header.html::header})"></head>
+<body>
+<div th:replace="(~{fragments/navbar.html::navbar})"></div>
+
+<div class="container trainings-container">
+    <h2 th:text="${trainingType}"/>
+
+    <ul class="trainings-ul">
+        <li class="trainings-li" th:each="training : ${trainings}">
+            <p th:text="'Start Date: ' + ${training.startDate}"></p>
+            <p th:text="'End Date: ' + ${training.endDate}"></p>
+            <p th:text="'Description: ' + ${training.description}"></p>
+        </li>
+    </ul>
+
+    <a class="trainings-btn" th:href="@{/user/add-training(type=${trainingType})}">Add New Training</a>
+</div>
+
+<div th:replace="(~{fragments/footer.html::footer})"></div>
+</body>
+</html>

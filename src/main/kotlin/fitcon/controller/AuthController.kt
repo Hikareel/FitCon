@@ -32,10 +32,6 @@ class AuthController(
         model.addAttribute("trainers", trainers)
         return "about"
     }
-    @GetMapping("/schedule")
-    fun schedule(): String{
-        return "schedule"
-    }
     @GetMapping("/faq")
     fun faq(): String{
         return "faq"

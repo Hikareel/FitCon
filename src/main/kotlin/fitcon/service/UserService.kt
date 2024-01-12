@@ -13,4 +13,5 @@ interface UserService {
     fun changePassword(email: String, oldPassword: String, newPassword: String): Boolean
     fun findAllTrainers(): List<UserDto>
     fun findUserById(id: Long): User?
+    fun findAllUsersByIds(userIds: Set<Long>): List<UserDto>
 }
