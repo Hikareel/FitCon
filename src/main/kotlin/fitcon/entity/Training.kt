@@ -11,6 +11,9 @@ class Training {
     var id: Long? = null
 
     @Column
+    var name: String? = null
+
+    @Column
     var startAt: LocalDateTime? = null
 
     @Column

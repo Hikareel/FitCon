@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="(~{fragments/header.html::header})"></head>
+<body>
+<div th:replace="(~{fragments/navbar.html::navbar})"></div>
+
+<div class="container trainings-container">
+    <h1 th:text="${trainingType}"></h1>
+    <dl>
+        <dt>Name:</dt>
+        <dd th:text="${training.name}"></dd>
+
+        <dt>Start Date:</dt>
+        <dd th:text="${training.startDate}"></dd>
+
+        <dt>End Date:</dt>
+        <dd th:text="${training.endDate}"></dd>
+
+        <dt>Description:</dt>
+        <dd th:text="${training.description}"></dd>
+
+        <dt>Select Users:</dt>
+        <dd>
+            <form class="form-horizontal" th:action="@{/user/add-users-to-training/save(id=${training.id}, type=${training.type})}" th:object="${selectedUsers}" method="POST">
+                <label>
+                    <select th:if="${training.type != 'PERSONAL'}" multiple="multiple" th:field="*{ids}">
+                        <option th:each="user : ${users}" th:value="${user.id}"
+                                th:text="${user.firstName} + ' ' + ${user.lastName} + ' (' + ${user.email} + ')'"></option>
+                    </select>
+
+                    <select th:if="${training.type == 'PERSONAL'}"  th:field="*{ids}">
+                        <option th:each="user : ${users}" th:value="${user.id}"
+                                th:text="${user.firstName} + ' ' + ${user.lastName} + ' (' + ${user.email} + ')'"></option>
+                    </select>
+                </label>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="trainings-btn">Save</button>
+                    </div>
+                </div>
+            </form>
+        </dd>
+    </dl>
+</div>
+
+<div th:replace="(~{fragments/footer.html::footer})"></div>
+</body>
+</html>

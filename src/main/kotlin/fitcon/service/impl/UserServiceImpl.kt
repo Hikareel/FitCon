@@ -68,6 +68,14 @@ class UserServiceImpl(
             .collect(Collectors.toList())
     }
 
+    override fun findAllClients(): List<UserDto> {
+        val role = roleRepository.findByName("CLIENT")
+        return userRepository.findAllByRole(role!!)
+            .stream()
+            .map { client -> mapToUserDto(client) }
+            .collect(Collectors.toList())
+    }
+
     override fun findUserById(id: Long): User? {
         return userRepository.findById(id).get()
     }

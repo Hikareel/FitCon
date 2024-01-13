@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface TrainingRepository : JpaRepository<Training?, Long?> {
     fun findAllByUserIdAndType(userId: Long, type: String): List<Training>
+    fun findAllByIdInAndType(trainingIds: List<Long>, type: String): List<Training>
 }

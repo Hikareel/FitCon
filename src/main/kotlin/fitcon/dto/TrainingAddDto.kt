@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
 
 class TrainingAddDto {
+    @NotEmpty(message = "Must have name!")
+    var name: String? = null
+
     @NotNull(message = "Must have start date!")
     var startDate: LocalDateTime? = null
 

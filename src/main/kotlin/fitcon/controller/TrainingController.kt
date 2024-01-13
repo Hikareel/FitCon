@@ -1,7 +1,9 @@
 package fitcon.controller
 
+import fitcon.dto.AddedUsersDto
 import fitcon.dto.TrainingAddDto
 import fitcon.service.TrainingService
+import fitcon.service.TrainingUserService
 import fitcon.service.UserService
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
@@ -15,40 +17,65 @@ import org.springframework.web.bind.annotation.*
 @Controller
 class TrainingController(
     private val userService: UserService,
-    private val trainingService: TrainingService
+    private val trainingService: TrainingService,
+    private val trainingUserService: TrainingUserService
 ) {
 
-    @PreAuthorize("hasRole('TRAINER')")
+    @PreAuthorize("hasRole('TRAINER') or hasRole('CLIENT')")
     @GetMapping("/user/group-trainings")
     fun groupTrainings(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String {
         val user = userService.findUserByEmail(userDetails.username)
-        model.addAttribute("trainingType", "GROUP")
-        model.addAttribute("trainings", trainingService.findAllTrainings(user?.id!!, "GROUP"))
-        return "userProfile/trainings"
+        return if (userDetails.authorities.toString().contains("TRAINER")) {
+            returnTrainingsForTrainer(model, user?.id!!, "GROUP")
+        } else returnTrainingsForClient(model, user?.id!!, "GROUP")
     }
 
-    @PreAuthorize("hasRole('TRAINER')")
+    @PreAuthorize("hasRole('TRAINER') or hasRole('CLIENT')")
     @GetMapping("/user/personal-trainings")
     fun personalTrainings(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String {
         val user = userService.findUserByEmail(userDetails.username)
-        model.addAttribute("trainingType", "PERSONAL")
-        model.addAttribute("trainings", trainingService.findAllTrainings(user?.id!!, "PERSONAL"))
-        return "userProfile/trainings"
+        return if (userDetails.authorities.toString().contains("TRAINER")) {
+            returnTrainingsForTrainer(model, user?.id!!, "PERSONAL")
+        } else returnTrainingsForClient(model, user?.id!!, "PERSONAL")
     }
 
     @PreAuthorize("hasRole('TRAINER')")
     @GetMapping("/user/add-training")
     fun addTrainingForm(model: Model, @RequestParam("type") trainingType: String?): String {
-        val training = TrainingAddDto()
+        val trainingAdd = TrainingAddDto()
         model.addAttribute("trainingType", trainingType)
-        model.addAttribute("training", training)
+        model.addAttribute("trainingAdd", trainingAdd)
         return "userProfile/addTraining"
+    }
+
+    @PreAuthorize("hasRole('TRAINER')")
+    @GetMapping("/user/add-users-to-training")
+    fun addUsersToTraining(model: Model, @RequestParam("id") trainingId: Long?): String {
+        model.addAttribute("training", trainingService.findTrainingById(trainingId!!))
+        model.addAttribute("users", userService.findAllClients())
+        model.addAttribute("selectedUsers", AddedUsersDto())
+        return "userProfile/addUsersToTraining"
+    }
+
+    @PreAuthorize("hasRole('TRAINER')")
+    @PostMapping("/user/add-users-to-training/save")
+    fun addUsersToTraining(
+        @AuthenticationPrincipal userDetails: UserDetails,
+        @RequestParam("type") trainingType: String?,
+        @RequestParam("id") trainingId: Long?,
+        @ModelAttribute addedUsersDto: AddedUsersDto,
+        model: Model
+
+    ): String {
+        val user = userService.findUserByEmail(userDetails.username)
+        trainingUserService.saveAllUsersToTraining(trainingId!!, addedUsersDto.ids!!)
+        return returnTrainingsForTrainer(model, user?.id!!, trainingType!!)
     }
 
     @PreAuthorize("hasRole('TRAINER')")
     @PostMapping("/user/add-training/save")
     fun addTraining(
-        @Valid @ModelAttribute("training") trainingDto: TrainingAddDto,
+        @Valid @ModelAttribute("trainingAdd") trainingDto: TrainingAddDto,
         @AuthenticationPrincipal userDetails: UserDetails,
         @RequestParam("type") trainingType: String?,
         model: Model,
@@ -56,8 +83,21 @@ class TrainingController(
     ): String {
         val user = userService.findUserByEmail(userDetails.username)
         trainingService.saveTraining(trainingDto, trainingType!!, user?.id!!)
+        return returnTrainingsForTrainer(model, user.id, trainingType)
+    }
+
+    private fun returnTrainingsForTrainer(model: Model, userId: Long, trainingType: String): String {
         model.addAttribute("trainingType", trainingType)
-        model.addAttribute("trainings", trainingService.findAllTrainings(user.id, trainingType))
+        model.addAttribute("trainings", trainingService.findAllTrainings(userId, trainingType))
+        model.addAttribute("isTrainer", true)
+        return "userProfile/trainings"
+    }
+
+    private fun returnTrainingsForClient(model: Model, userId: Long, trainingType: String): String {
+        model.addAttribute("trainingType", trainingType)
+        val trainingIds = trainingUserService.findTrainingIdsByUserId(userId)
+        model.addAttribute("trainings", trainingService.findTrainingByIdsAndType(trainingIds, trainingType))
+        model.addAttribute("isTrainer", false)
         return "userProfile/trainings"
     }
 }
