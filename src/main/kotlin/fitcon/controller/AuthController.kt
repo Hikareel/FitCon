@@ -134,8 +134,6 @@ class AuthController(
         workoutService.saveWorkout(workoutDto, userDetails.username)
         exerciseService.saveExercises(workoutDto.exercises, workoutDto.name!!)
         return "redirect:/user/workouts"
-//        model.addAttribute("workout", workoutDto)
-//        return "test"
     }
     @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
     @GetMapping("/user/workouts")
