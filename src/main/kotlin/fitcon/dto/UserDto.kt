@@ -1,5 +1,6 @@
 package fitcon.dto
 
+import jakarta.persistence.Column
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 
@@ -15,6 +16,8 @@ class UserDto {
     @NotEmpty(message = "Email should not be empty")
     @Email
     var email: String? = null
+
+    var phoneNumber: String? = null
 
     @NotEmpty(message = "Password should not be empty")
     var password: String? = null

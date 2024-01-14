@@ -9,6 +9,10 @@
     <div class="row col-md-10">
         Name: <h2 th:text="${trainer.getName()}"></h2>
         Email: <b th:text="${trainer.getEmail()}"></b>
+        <div th:if="${trainer.getPhoneNumber()} != ''">
+            <a aria-label="Chat on WhatsApp" th:href="'https://wa.me/' + ${trainer.getPhoneNumber()}" target="_blank"> <img alt="Chat on WhatsApp" th:src="@{/image/whatsAppButton.svg}" />
+                </a>
+        </div>
     </div>
 </div>
 <div th:replace="(~{fragments/footer.html::footer})"></div>

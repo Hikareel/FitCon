@@ -9,6 +9,7 @@
         <div class="row col-md-10">
             Name: <h2 th:text="${user.getName()}"></h2>
             Email: <b th:text="${user.getEmail()}"></b>
+            Phone number: <b th:text="${user.getPhoneNumber()}"></b>
         </div>
         <a class="btn" th:href="@{/user/change-password}">Change password</a>
 

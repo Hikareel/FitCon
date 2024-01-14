@@ -19,6 +19,9 @@ class User {
     @Column(nullable = false)
     var password: String? = null
 
+    @Column(nullable = true)
+    var phoneNumber: String? = null
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = [CascadeType.ALL])
     @JoinColumn(name = "ROLE_ID", nullable = false)
     var role: Role? = null
