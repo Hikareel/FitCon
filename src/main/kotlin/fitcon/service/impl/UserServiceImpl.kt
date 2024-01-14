@@ -21,6 +21,7 @@ class UserServiceImpl(
         user.name = userDto.firstName + " " + userDto.lastName
         user.email = userDto.email
         user.password = passwordEncoder.encode(userDto.password)
+        user.phoneNumber = userDto.phoneNumber
         val roleName = if (role) "TRAINER" else "CLIENT"
 
         var role = roleRepository.findByName(roleName)
@@ -94,6 +95,7 @@ class UserServiceImpl(
         userDto.firstName = str[0]
         userDto.lastName = str[1]
         userDto.email = user.email!!
+        userDto.phoneNumber = user.phoneNumber
         return userDto
     }
 
