@@ -17,38 +17,6 @@
                     <p th:errors = "*{name}" class="text-danger"
                        th:if="${#fields.hasErrors('name')}"></p>
                 </div>
-                <div th:object="${exercise}">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="exerciseName">Exercise name:</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="exerciseName" type="text" name="exerciseName" th:field="*{exerciseName}" required>
-                        </div>
-                        <p th:errors = "*{exerciseName}" class="text-danger"
-                           th:if="${#fields.hasErrors('exerciseName')}"></p>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="reps">Reps count:</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="reps" type="number" name="reps" th:field="*{reps}" required>
-                        </div>
-                        <p th:errors = "*{reps}" class="text-danger"
-                           th:if="${#fields.hasErrors('reps')}"></p>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="series">Series count:</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="series" type="number" name="series" th:field="*{series}" required>
-                        </div>
-                        <p th:errors = "*{series}" class="text-danger"
-                           th:if="${#fields.hasErrors('series')}"></p>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="info">Additional info:</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="info" type="text" name="info" th:field="*{info}">
-                        </div>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="description">Description:</label>
                     <div class="col-sm-10">
@@ -56,6 +24,57 @@
                     </div>
                     <p th:errors = "*{description}" class="text-danger"
                        th:if="${#fields.hasErrors('description')}"></p>
+                </div>
+                <div class="exercises">
+                    <div class="exercise" th:each="exercise, iterStat: ${workout.exercises}">
+                        <p>Exercise [(${iterStat.index+1})]</p>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="exerciseName">Exercise name:</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" id="exerciseName" type="text" name="exerciseName" th:field="*{exercises[__${iterStat.index}__].exerciseName}" required>
+                            </div>
+                            <p th:errors = "*{exercises[__${iterStat.index}__].exerciseName}" class="text-danger"
+                               th:if="${#fields.hasErrors('exercises[__${iterStat.index}__].exerciseName')}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="reps">Reps count:</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" id="reps" type="number" name="reps" th:field="*{exercises[__${iterStat.index}__].reps}" required>
+                            </div>
+                            <p th:errors = "*{exercises[__${iterStat.index}__].reps}" class="text-danger"
+                               th:if="${#fields.hasErrors('exercises[__${iterStat.index}__].reps')}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="series">Series count:</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" id="series" type="number" name="series" th:field="*{exercises[__${iterStat.index}__].series}" required>
+                            </div>
+                            <p th:errors = "*{exercises[__${iterStat.index}__].series}" class="text-danger"
+                               th:if="${#fields.hasErrors('exercises[__${iterStat.index}__].series')}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="info">Additional info:</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="info" type="text" name="info" th:field="*{exercises[__${iterStat.index}__].info}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="control-label" for="exercisesAmount">How many exercises:</label>
+                    <div class="input-group col-sm-1">
+                      <span class="input-group-btn">
+                          <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quaint">
+                            <span class="glyphicon glyphicon-minus"></span>-
+                          </button>
+                      </span>
+                      <input id="exercisesAmount" type="text" name="quaint" class="form-control input-number" value="1" min="1" max="20" disabled>
+                      <span class="input-group-btn">
+                          <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quaint">
+                              <span class="glyphicon glyphicon-plus"></span>+
+                          </button>
+                      </span>
+                    </div>
                 </div>
                 <br>
                 <div class="form-group">
