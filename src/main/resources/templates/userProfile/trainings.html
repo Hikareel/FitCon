@@ -5,8 +5,12 @@
 <div th:replace="(~{fragments/navbar.html::navbar})"></div>
 
 <div class="container trainings-container">
+    <a th:if="${isTrainer && !connectedToGoogleCalendar}" class="trainings-btn" th:href="@{/connect-google-calendar}">Connect Google Calendar</a>
+    <a th:if="${isTrainer && connectedToGoogleCalendar}" class="trainings-btn" th:href="@{/disconnect-google-calendar}">Disconnect Google Calendar</a>
+    <br th:if="${isTrainer}"/>
+    <br th:if="${isTrainer}"/>
+    <br th:if="${isTrainer}"/>
     <h2 th:text="${trainingType}"/>
-
     <ul class="trainings-ul">
         <li class="trainings-li" th:each="training : ${trainings}">
             <p th:text="'Name: ' + ${training.name}"></p>
@@ -18,7 +22,8 @@
         </li>
     </ul>
 
-    <a th:if="${isTrainer}" class="trainings-btn" th:href="@{/user/add-training(type=${trainingType})}">Add New Training</a>
+    <a th:if="${isTrainer}" class="trainings-btn" th:href="@{/user/add-training(type=${trainingType})}">Add New
+        Training</a>
 </div>
 
 <div th:replace="(~{fragments/footer.html::footer})"></div>

@@ -34,10 +34,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     implementation("mysql:mysql-connector-java:8.0.28")
-    implementation("com.google.api-client:google-api-client:2.2.0")
     implementation("com.google.oauth-client:google-oauth-client:1.34.1")
-    implementation("com.google.apis:google-api-services-calendar:v3-rev411-1.25.0")
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("com.google.apis:google-api-services-calendar:v3-rev224-1.22.0")
 
 
 }

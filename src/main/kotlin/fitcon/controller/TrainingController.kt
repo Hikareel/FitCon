@@ -2,6 +2,7 @@ package fitcon.controller
 
 import fitcon.dto.AddedUsersDto
 import fitcon.dto.TrainingAddDto
+import fitcon.service.GoogleCalendarService
 import fitcon.service.TrainingService
 import fitcon.service.TrainingUserService
 import fitcon.service.UserService
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.*
 class TrainingController(
     private val userService: UserService,
     private val trainingService: TrainingService,
-    private val trainingUserService: TrainingUserService
+    private val trainingUserService: TrainingUserService,
+    private val googleCalendarService: GoogleCalendarService
 ) {
 
     @PreAuthorize("hasRole('TRAINER') or hasRole('CLIENT')")
@@ -83,6 +85,7 @@ class TrainingController(
     ): String {
         val user = userService.findUserByEmail(userDetails.username)
         trainingService.saveTraining(trainingDto, trainingType!!, user?.id!!)
+        googleCalendarService.addEventToGoogleCalendar(trainingDto)
         return returnTrainingsForTrainer(model, user.id, trainingType)
     }
 
@@ -90,6 +93,7 @@ class TrainingController(
         model.addAttribute("trainingType", trainingType)
         model.addAttribute("trainings", trainingService.findAllTrainings(userId, trainingType))
         model.addAttribute("isTrainer", true)
+        model.addAttribute("connectedToGoogleCalendar", googleCalendarService.credential != null)
         return "userProfile/trainings"
     }
 
@@ -98,6 +102,7 @@ class TrainingController(
         val trainingIds = trainingUserService.findTrainingIdsByUserId(userId)
         model.addAttribute("trainings", trainingService.findTrainingByIdsAndType(trainingIds, trainingType))
         model.addAttribute("isTrainer", false)
+        model.addAttribute("connectedToGoogleCalendar", googleCalendarService.credential != null)
         return "userProfile/trainings"
     }
 }

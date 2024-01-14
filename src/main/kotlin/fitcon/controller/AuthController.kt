@@ -69,7 +69,7 @@ class AuthController(
         return "redirect:/register?success"
     }
     @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
-    @GetMapping("/user")
+    @GetMapping("/user/account")
     fun users(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
         val user = userService.findUserByEmail(userDetails.username)
         model.addAttribute("user", user)

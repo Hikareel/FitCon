@@ -31,17 +31,18 @@ class SpringSecurity(
             }
             .authorizeHttpRequests { authorize ->
                 authorize.requestMatchers("/register/**").permitAll()
-                    .requestMatchers("/home", "/about", "/schedule", "/faq", "/contact", "/user/{id}").permitAll()
+                    .requestMatchers("/home", "/about", "/schedule", "/faq", "/contact", "/user/{id}","/user").permitAll()
                     .anyRequest().authenticated()
             }.formLogin { form ->
                 form
                     .loginPage("/login")
                     .loginProcessingUrl("/login")
-                    .defaultSuccessUrl("/user", true)
+                    .defaultSuccessUrl("/user/account", true)
                     .permitAll()
             }.logout { logout ->
                 logout
                     .logoutRequestMatcher(AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/logout/success")
                     .permitAll()
             }
         return http.build()
