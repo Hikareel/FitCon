@@ -9,4 +9,5 @@ interface TrainingService {
     fun saveTraining(training: TrainingAddDto, type: String, userId: Long)
     fun findTrainingById(trainingId: Long): TrainingDto?
     fun findTrainingByIdsAndType(ids: List<Long>, trainingType: String): List<TrainingDto>
+    fun setSynchronized(id: Long)
 }

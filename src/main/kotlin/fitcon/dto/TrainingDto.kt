@@ -9,4 +9,5 @@ class TrainingDto {
     var type: String? = null
     var userId: Long? = null
     var assignedUsers: String? = null
+    var synchronized: Boolean? = null
 }

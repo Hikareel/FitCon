@@ -32,7 +32,7 @@ class GoogleCalendarController(private val googleCalendarService: GoogleCalendar
 
     private var flow: GoogleAuthorizationCodeFlow? = null
 
-    @PreAuthorize("hasRole('TRAINER')")
+    @PreAuthorize("hasRole('TRAINER') or hasRole('USER')")
     @GetMapping("/connect-google-calendar")
     fun connectGoogleCalendar(
         model: Model, @RequestParam("type") trainingType: String?,
@@ -41,7 +41,7 @@ class GoogleCalendarController(private val googleCalendarService: GoogleCalendar
         return RedirectView(authorize())
     }
 
-    @PreAuthorize("hasRole('TRAINER')")
+    @PreAuthorize("hasRole('TRAINER') or hasRole('USER')")
     @GetMapping("/disconnect-google-calendar")
     fun disconnectGoogleCalendar(): String {
         googleCalendarService.credential = null

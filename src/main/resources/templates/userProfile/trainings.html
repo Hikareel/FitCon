@@ -5,11 +5,11 @@
 <div th:replace="(~{fragments/navbar.html::navbar})"></div>
 
 <div class="container trainings-container">
-    <a th:if="${isTrainer && !connectedToGoogleCalendar}" class="trainings-btn" th:href="@{/connect-google-calendar}">Connect Google Calendar</a>
-    <a th:if="${isTrainer && connectedToGoogleCalendar}" class="trainings-btn" th:href="@{/disconnect-google-calendar}">Disconnect Google Calendar</a>
-    <br th:if="${isTrainer}"/>
-    <br th:if="${isTrainer}"/>
-    <br th:if="${isTrainer}"/>
+    <a th:if="${!connectedToGoogleCalendar}" class="trainings-btn" th:href="@{/connect-google-calendar}">Connect Google Calendar</a>
+    <a th:if="${connectedToGoogleCalendar}" class="trainings-btn" th:href="@{/disconnect-google-calendar}">Disconnect Google Calendar</a>
+    <br/>
+    <br/>
+    <br/>
     <h2 th:text="${trainingType}"/>
     <ul class="trainings-ul">
         <li class="trainings-li" th:each="training : ${trainings}">
@@ -19,6 +19,7 @@
             <p th:text="'Description: ' + ${training.description}"></p>
             <p th:if="${isTrainer}" th:text="'Users: ' + ${training.assignedUsers}"></p>
             <a th:if="${isTrainer}" class="trainings-btn2" th:href="@{/user/add-users-to-training(id=${training.id})}">Change users</a>
+            <a th:if="${!isTrainer && !training.synchronized}" class="trainings-btn2" th:href="@{/synchronize-training(id=${training.id}, type=${training.type})}">Synchronize with Google Calendar</a>
         </li>
     </ul>
 

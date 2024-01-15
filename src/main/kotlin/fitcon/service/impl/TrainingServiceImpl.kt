@@ -8,6 +8,7 @@ import fitcon.repository.TrainingUserRepository
 import fitcon.repository.UserRepository
 import fitcon.service.TrainingService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -64,6 +65,11 @@ class TrainingServiceImpl(
             .toList()
     }
 
+    @Transactional
+    override fun setSynchronized(id: Long) {
+        trainingRepository.updateSynchronizedById(id, true)
+    }
+
     private fun formatDate(date: LocalDateTime): String {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         return date.format(formatter)
@@ -78,6 +84,7 @@ class TrainingServiceImpl(
         trainingDto.description = training.description
         trainingDto.type = training.type
         trainingDto.userId = training.userId
+        trainingDto.synchronized = if (training.synchronized == null) false else training.synchronized
         return trainingDto
     }
 

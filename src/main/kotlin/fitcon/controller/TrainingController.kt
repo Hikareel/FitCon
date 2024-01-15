@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Controller
 class TrainingController(
@@ -85,8 +87,38 @@ class TrainingController(
     ): String {
         val user = userService.findUserByEmail(userDetails.username)
         trainingService.saveTraining(trainingDto, trainingType!!, user?.id!!)
-        googleCalendarService.addEventToGoogleCalendar(trainingDto)
+        googleCalendarService.addEventToGoogleCalendar(
+            trainingDto.name!!,
+            trainingDto.startDate!!,
+            trainingDto.endDate!!,
+            trainingDto.description!!
+        )
         return returnTrainingsForTrainer(model, user.id, trainingType)
+    }
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/synchronize-training")
+    fun synchronizeTraining(
+        @AuthenticationPrincipal userDetails: UserDetails,
+        @RequestParam("id") id: Long?,
+        @RequestParam("type") trainingType: String?,
+        model: Model
+    ): String {
+        val user = userService.findUserByEmail(userDetails.username)
+
+        if (googleCalendarService.credential == null) {
+            return returnTrainingsForClient(model, user?.id!!, trainingType!!)
+        }
+
+        val training = trainingService.findTrainingById(id!!)
+        googleCalendarService.addEventToGoogleCalendar(
+            training?.name!!,
+            LocalDateTime.parse(training.startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+            LocalDateTime.parse(training.endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+            training.description!!
+        )
+        trainingService.setSynchronized(id)
+        return returnTrainingsForClient(model, user?.id!!, trainingType!!)
     }
 
     private fun returnTrainingsForTrainer(model: Model, userId: Long, trainingType: String): String {

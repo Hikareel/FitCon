@@ -7,15 +7,15 @@ import com.google.api.client.util.DateTime
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.EventDateTime
-import fitcon.dto.TrainingAddDto
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 @Service
 class GoogleCalendarService {
     var credential: Credential? = null
 
-    fun addEventToGoogleCalendar(dto: TrainingAddDto) {
+    fun addEventToGoogleCalendar(name: String, startDate: LocalDateTime, endDate: LocalDateTime, description: String) {
         if (credential == null) {
             return
         }
@@ -29,14 +29,14 @@ class GoogleCalendarService {
             .build()
 
         val event = Event()
-            .setSummary(dto.name)
-            .setDescription(dto.description)
+            .setSummary(name)
+            .setDescription(description)
 
-        val startDateTime = DateTime(dto.startDate!!.toEpochSecond(ZoneOffset.UTC) * 1000)
+        val startDateTime = DateTime(startDate.toEpochSecond(ZoneOffset.UTC) * 1000)
         val start = EventDateTime().setDateTime(startDateTime).setTimeZone("UTC")
         event.start = start
 
-        val endDateTime = DateTime(dto.endDate!!.toEpochSecond(ZoneOffset.UTC) * 1000)
+        val endDateTime = DateTime(endDate.toEpochSecond(ZoneOffset.UTC) * 1000)
         val end = EventDateTime().setDateTime(endDateTime).setTimeZone("UTC")
         event.end = end
 

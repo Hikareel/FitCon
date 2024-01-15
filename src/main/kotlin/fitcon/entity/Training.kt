@@ -27,4 +27,7 @@ class Training {
 
     @Column
     var userId: Long? = null
+
+    @Column
+    var synchronized: Boolean? = null
 }
