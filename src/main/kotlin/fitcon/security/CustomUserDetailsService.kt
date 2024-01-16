@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import java.util.*
 import java.util.stream.Collectors
 
 
@@ -29,10 +30,6 @@ class CustomUserDetailsService(
         }
     }
     private fun mapRoleToAuthorities(role: Role): Collection<GrantedAuthority?> {
-        val roles = listOf(role)
-        val mapRoles: Collection<GrantedAuthority?> = roles.stream()
-            .map { role -> SimpleGrantedAuthority(role.name) }
-            .collect(Collectors.toList())
-        return mapRoles
+        return Collections.singleton(SimpleGrantedAuthority(role.name))
     }
 }
