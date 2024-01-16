@@ -123,16 +123,8 @@ class AuthController(
         model: Model,
         result: BindingResult
     ): String{
-        val existingWorkout = workoutService.findWorkoutByName(workoutDto.name!!)
-        if (existingWorkout != null ){
-            result.rejectValue("name", "", "There is already workout with that name!")
-        }
-        if (result.hasErrors()){
-            model.addAttribute("workout", workoutDto)
-            return "userProfile/addWorkout"
-        }
-        workoutService.saveWorkout(workoutDto, userDetails.username)
-        exerciseService.saveExercises(workoutDto.exercises, workoutDto.name!!)
+        val savedWorkout = workoutService.saveWorkout(workoutDto, userDetails.username)
+        exerciseService.saveExercises(workoutDto.exercises, workoutDto.name!!, savedWorkout.id)
         return "redirect:/user/workouts"
     }
     @PreAuthorize("hasRole('CLIENT') or hasRole('TRAINER')")
@@ -140,10 +132,6 @@ class AuthController(
     fun userWorkouts(model: Model, @AuthenticationPrincipal userDetails: UserDetails): String{
         val userWorkouts = workoutService
                             .findWorkoutsByUserEmail(userDetails.username)
-                            .stream()
-                            .peek {
-                                workout -> workout.exercises = exerciseService.findAllExerciseByWorkout(workout)
-                            }
                             .toList()
 
         model.addAttribute("userWorkouts", userWorkouts)

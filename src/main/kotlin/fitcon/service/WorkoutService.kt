@@ -7,6 +7,6 @@ import fitcon.entity.Workout
 interface WorkoutService {
     fun findWorkoutByName(name: String): Workout?
     fun findAllWorkouts(): List<WorkoutDto>
-    fun saveWorkout(workoutDto: WorkoutDto, userEmail: String)
+    fun saveWorkout(workoutDto: WorkoutDto, userEmail: String): Workout
     fun findWorkoutsByUserEmail(userEmail: String): List<WorkoutDto>
 }

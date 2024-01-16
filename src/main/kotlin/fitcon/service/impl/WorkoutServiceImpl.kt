@@ -3,8 +3,10 @@ package fitcon.service.impl
 import fitcon.dto.WorkoutDto
 import fitcon.entity.User
 import fitcon.entity.Workout
+import fitcon.repository.ExerciseRepository
 import fitcon.repository.UserRepository
 import fitcon.repository.WorkoutRepository
+import fitcon.service.ExerciseService
 import fitcon.service.WorkoutService
 import org.springframework.stereotype.Service
 import java.util.stream.Collectors
@@ -12,6 +14,7 @@ import java.util.stream.Collectors
 @Service
 class WorkoutServiceImpl(
     val workoutRepository: WorkoutRepository,
+    val exerciseService: ExerciseService,
     val userRepository: UserRepository
 ): WorkoutService {
     override fun findWorkoutByName(name: String): Workout? {
@@ -26,12 +29,12 @@ class WorkoutServiceImpl(
                 .collect(Collectors.toList())
     }
 
-    override fun saveWorkout(workoutDto: WorkoutDto, userEmail: String) {
+    override fun saveWorkout(workoutDto: WorkoutDto, userEmail: String): Workout {
         val workout = Workout()
         workout.name = workoutDto.name
         workout.description = workoutDto.description
         workout.createdBy = userRepository.findByEmail(userEmail)
-        workoutRepository.save(workout)
+        return workoutRepository.save(workout)
     }
 
     override fun findWorkoutsByUserEmail(userEmail: String): List<WorkoutDto> {
@@ -47,6 +50,7 @@ class WorkoutServiceImpl(
         val workoutDto = WorkoutDto()
         workoutDto.name = workout.name
         workoutDto.description = workout.description
+        workoutDto.exercises = exerciseService.findAllExercisesByWorkout(workout)
         return workoutDto
     }
 }

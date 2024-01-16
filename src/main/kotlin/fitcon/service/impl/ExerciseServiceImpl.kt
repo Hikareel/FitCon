@@ -3,6 +3,7 @@ package fitcon.service.impl
 import fitcon.dto.ExerciseDto
 import fitcon.dto.WorkoutDto
 import fitcon.entity.Exercise
+import fitcon.entity.Workout
 import fitcon.repository.ExerciseRepository
 import fitcon.repository.WorkoutRepository
 import fitcon.service.ExerciseService
@@ -18,8 +19,7 @@ class ExerciseServiceImpl(
         return exerciseRepository.findByExerciseName(name)
     }
 
-    override fun findAllExerciseByWorkout(workoutDto: WorkoutDto): List<ExerciseDto> {
-        val workout = workoutRepository.findByName(workoutDto.name)
+    override fun findAllExercisesByWorkout(workout: Workout?): List<ExerciseDto> {
         val exercises = exerciseRepository.findAllByWorkoutId(workout!!)
         return exercises
             .stream()
@@ -27,19 +27,20 @@ class ExerciseServiceImpl(
             .collect(Collectors.toList())
     }
 
-    override fun saveExercise(exerciseDto: ExerciseDto, workoutName: String) {
+    override fun saveExercise(exerciseDto: ExerciseDto, workoutName: String, workoutId: Long?) {
         val exercise = Exercise()
         exercise.exerciseName = exerciseDto.exerciseName
         exercise.info = exerciseDto.info
         exercise.reps = exerciseDto.reps
         exercise.series = exerciseDto.series
-        exercise.workoutId = workoutRepository.findByName(workoutName)
+        exercise.workoutId = workoutId?.let { workoutRepository.findById(it).orElse(null) }
+            ?: workoutRepository.findByName(workoutName)
         exerciseRepository.save(exercise)
     }
 
-    override fun saveExercises(exerciseDtoList: List<ExerciseDto>?, workoutName: String) {
+    override fun saveExercises(exerciseDtoList: List<ExerciseDto>?, workoutName: String, workoutId: Long?) {
         exerciseDtoList?.forEach {
-                saveExercise(it, workoutName)
+                saveExercise(it, workoutName, workoutId)
             }
     }
 

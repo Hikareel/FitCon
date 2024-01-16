@@ -30,8 +30,9 @@ class SpringSecurity(
                 csrf.disable()
             }
             .authorizeHttpRequests { authorize ->
-                authorize.requestMatchers("/register/**").permitAll()
-                    .requestMatchers("/home", "/about", "/schedule", "/faq", "/contact", "/user/{id}","/user").permitAll()
+                authorize
+                    .requestMatchers("/register/**").permitAll()
+                    .requestMatchers("/home", "/about", "/schedule", "/faq", "/contact", "/user/{id}").permitAll()
                     .anyRequest().authenticated()
             }.formLogin { form ->
                 form
