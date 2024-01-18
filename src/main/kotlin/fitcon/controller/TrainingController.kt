@@ -69,7 +69,6 @@ class TrainingController(
         @RequestParam("id") trainingId: Long?,
         @ModelAttribute addedUsersDto: AddedUsersDto,
         model: Model
-
     ): String {
         val user = userService.findUserByEmail(userDetails.username)
         trainingUserService.saveAllUsersToTraining(trainingId!!, addedUsersDto.ids!!)
@@ -85,6 +84,13 @@ class TrainingController(
         model: Model,
         result: BindingResult
     ): String {
+        if (trainingDto.startDate!! > trainingDto.endDate){
+            result.rejectValue("startDate", "",
+                "End date must occure after start date!")
+            model.addAttribute("trainingType", trainingType)
+            model.addAttribute("trainingAdd", trainingDto)
+            return "userProfile/addTraining"
+        }
         val user = userService.findUserByEmail(userDetails.username)
         trainingService.saveTraining(trainingDto, trainingType!!, user?.id!!)
         googleCalendarService.addEventToGoogleCalendar(
