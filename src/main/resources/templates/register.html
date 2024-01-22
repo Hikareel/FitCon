@@ -58,9 +58,10 @@
                       class="form-control"
                       id="phoneNumber"
                       name="phoneNumber"
-                      placeholder="Enter phone number"
+                      placeholder="123456789"
                       th:field="*{phoneNumber}"
                       type="text"
+                      pattern="[0-9]{9}"
               />
               <p th:errors = "*{phoneNumber}" class="text-danger"
                  th:if="${#fields.hasErrors('phoneNumber')}"></p>
@@ -99,7 +100,9 @@
                       id="role"
                       name="role"
                       type="checkbox"
-              >
+                      value="true"
+                      th:field="*{role}"
+              />
             </div>
             <div class="form-group">
               <button class="btn btn-primary" type="submit">Register</button>

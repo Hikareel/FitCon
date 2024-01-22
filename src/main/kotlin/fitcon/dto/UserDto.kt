@@ -21,4 +21,6 @@ class UserDto {
 
     @NotEmpty(message = "Password should not be empty")
     var password: String? = null
+
+    var role: String? = null
 }

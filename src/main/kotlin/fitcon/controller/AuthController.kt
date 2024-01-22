@@ -52,10 +52,10 @@ class AuthController(
     @PostMapping("/register/save")
     fun registration(
         @Valid @ModelAttribute("user") userDto: UserDto,
-        @RequestParam(required = false) role: Boolean,
         result: BindingResult,
         model: Model
     ):String{
+        val role = userDto.role?.toBoolean() ?: false
         val existingUser = userService.findUserByEmail(userDto.email!!)
         if(existingUser?.email != null && existingUser.email!!.isNotEmpty()){
             result.rejectValue("email", "",
