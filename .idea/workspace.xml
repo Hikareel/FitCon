@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1b8e7d39-6fb0-4d24-8a59-d4c59b8e5e39" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,9 +63,12 @@
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "E:/Program Files/Projects/FitCon/FitCon.client/package.json",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.Client-dev.executor": "Run",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -73,6 +77,11 @@
     ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Program Files\Projects\FitCon" />
+    </key>
+  </component>
   <component name="RunManager" selected="Spring Boot.Server">
     <configuration name="Server" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="fitcon.FitCon.main" />
@@ -112,7 +121,7 @@
       <option name="presentableId" value="Default" />
       <updated>1708351963902</updated>
       <workItem from="1708351966102" duration="244000" />
-      <workItem from="1708352218822" duration="149000" />
+      <workItem from="1708352218822" duration="5611000" />
     </task>
     <servers />
   </component>
