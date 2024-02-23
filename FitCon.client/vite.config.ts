@@ -10,4 +10,14 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://localhost:9090/',
+        secure: false,
+        rewrite: path => path.replace(/^\/api/,'')
+      }
+    },
+    port: 9091
+  }
 })
